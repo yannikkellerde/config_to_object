@@ -66,5 +66,7 @@ def load_config(filename:str,comment_prefix=";") -> NamedTuple:
                 pass
     return multidict_to_namedtuple(config_dict,"Config")
 
-if __name__ == "__main__":
+def command_line_config():
+    if len(sys.argv) < 3:
+        raise ValueError("Usage: ini_typefile ConfigFilename OutputFilename")
     create_config_type_file(load_config(sys.argv[1]),sys.argv[2])
