@@ -1,7 +1,7 @@
 from typing import NamedTuple
 import sys
 from ast import literal_eval
-from collections import namedtuple
+from collections import OrderedDict, namedtuple
 import configparser
 
 def is_named_tuple_instance(x):
@@ -40,6 +40,8 @@ def _do_recur(config:NamedTuple,force_name=None):
 
 def create_config_type_file(config:NamedTuple,fname:str,obj_name=None):
     lines = ["# Automatically generated type hinting file for a .ini file",
+             "# Generated with config-to-object https://pypi.org/project/config-to-object/1.0.0/",
+             '# Run "ini_typefile your_config.ini type_file.py" to create a new type file',
              "",
              "from typing import NamedTuple, List, Tuple",
              ""]
@@ -50,7 +52,7 @@ def create_config_type_file(config:NamedTuple,fname:str,obj_name=None):
 
 def multidict_to_namedtuple(dic:dict,name:str) -> NamedTuple:
     for key in dic:
-        if type(dic[key]) == dict:
+        if type(dic[key]) == dict or type(dic[key]) == OrderedDict:
             dic[key] = multidict_to_namedtuple(dic[key],key)
     return namedtuple(name,dic.keys())(*dic.values())
 

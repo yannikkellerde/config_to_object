@@ -13,7 +13,7 @@ with open(os.path.join(HERE, "README.md")) as fid:
 # This call to setup() does all the work
 setup(
     name="config-to-object",
-    version="1.0.0",
+    version="1.0.2",
     description="A convinient .ini file to NamedTuple parser that supports type hinting",
     long_description=README,
     long_description_content_type="text/markdown",
