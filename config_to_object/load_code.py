@@ -3,6 +3,7 @@ import sys
 from ast import literal_eval
 from collections import OrderedDict, namedtuple
 import configparser
+import os
 
 def is_named_tuple_instance(x):
     t = type(x)
@@ -57,6 +58,10 @@ def multidict_to_namedtuple(dic:dict,name:str) -> NamedTuple:
     return namedtuple(name,dic.keys())(*dic.values())
 
 def load_config(filename:str,comment_prefix=";") -> NamedTuple:
+    if type(filename) != str:
+        raise ValueError("Expected filename to be of type str. Found {} instead".format(type(filename)))
+    if not os.path.isfile(filename):
+        raise ValueError("Could not find file "+filename)
     config_obj = configparser.ConfigParser(inline_comment_prefixes=comment_prefix)
     config_obj.read(filename)
     config_dict = config_obj._sections
