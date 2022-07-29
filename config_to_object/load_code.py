@@ -57,13 +57,13 @@ def multidict_to_namedtuple(dic:dict,name:str) -> NamedTuple:
             dic[key] = multidict_to_namedtuple(dic[key],key)
     return namedtuple(name,dic.keys())(*dic.values())
 
-def load_config(filename:str,comment_prefix=";") -> NamedTuple:
+def load_config(filename:str,comment_prefix=";",encoding=None) -> NamedTuple:
     if type(filename) != str:
         raise ValueError("Expected filename to be of type str. Found {} instead".format(type(filename)))
     if not os.path.isfile(filename):
         raise ValueError("Could not find file "+filename)
     config_obj = configparser.ConfigParser(inline_comment_prefixes=comment_prefix)
-    config_obj.read(filename)
+    config_obj.read(filename,encoding=encoding)
     config_dict = config_obj._sections
     for key in config_dict:
         for key2 in config_dict[key]:
